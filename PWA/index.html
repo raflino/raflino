@@ -1,50 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First PWA</title>
+    <title>PWA Saya - Percobaan</title>
     <link rel="manifest" href="manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registered: ', registration);
-                    })
-                    .catch(error => {
-                        console.log('Service Worker registration failed: ', error);
-                    });
-            });
-        }
-    </script>
+    <meta name="theme-color" content="#4CAF50">
+
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #f4f4f4;
             color: #333;
+            text-align: center;
         }
         .container {
-            text-align: center;
-            padding: 20px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 20px;
         }
         h1 {
-            color: #007bff;
+            color: #2196F3;
+            margin-bottom: 15px;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Halo, Ini PWA Pertama Saya!</h1>
-        <p>Anda bisa menambahkan konten lain di sini.</p>
+        <h1>Selamat Datang di PWA Percobaan Saya!</h1>
+        <p>Ini adalah halaman utama dari Progressive Web App sederhana yang dibuat untuk tugas.</p>
+        <p>Anda dapat menginstal aplikasi ini ke perangkat Anda untuk pengalaman yang lebih baik.</p>
+        <a href="#" class="button">Pelajari Lebih Lanjut</a>
     </div>
+
+    <script>
+        // Penting: Daftarkan Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker berhasil didaftarkan. Scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker gagal didaftarkan:', error);
+                    });
+            });
+        }
+
+        // Opsional: Tangani prompt instalasi secara manual (untuk kontrol lebih)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Cegah prompt default agar tidak langsung muncul
+            e.preventDefault();
+            // Simpan event sehingga bisa dipicu nanti
+            deferredPrompt = e;
+            console.log('Event beforeinstallprompt terpicu!');
+            // Anda bisa menampilkan tombol atau elemen UI Anda sendiri di sini
+            // Misalnya: document.getElementById('installButton').style.display = 'block';
+        });
+
+        // Contoh bagaimana memicu prompt instalasi jika Anda memiliki tombol kustom:
+        // document.getElementById('installButton').addEventListener('click', () => {
+        //     if (deferredPrompt) {
+        //         deferredPrompt.prompt();
+        //         deferredPrompt.userChoice.then((choiceResult) => {
+        //             if (choiceResult.outcome === 'accepted') {
+        //                 console.log('Pengguna menerima instalasi A2HS');
+        //             } else {
+        //                 console.log('Pengguna menolak instalasi A2HS');
+        //             }
+        //             deferredPrompt = null; // Reset prompt
+        //         });
+        //     }
+        // });
+    </script>
 </body>
 </html>
